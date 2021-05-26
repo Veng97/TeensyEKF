@@ -1,6 +1,14 @@
 # TeensyEKF
 TeensyEKF is a lightweight C/C++ implementation of the Extended Kalman Filter that supports sensors with varying update rates.
 
+//----------------------------------
+Experimentation with a Teensy 4.0 indicated that the update step could be performed in ~700 microseconds (never above 1ms). This was with a 21 state EKF, which would require significant resources to invert (Kalman gain update) otherwise. Although, at this point i have only rough estimates of the speed gains, the same EKF update took about 2.4 ms with 'TinyEKF' - which itself is an efficient implementation. 
+Even so, by eleminating the need for computing the matrix inverse, this EKF is potentially more robust towards rounding-errors, meaning floating point precision may be easier realizable without risking filter divergence. In that case, the update speed may become even faster reaching <200 microseconds. Keep in mind that these numbers are measured for a 21 state EKF.
+
+More data on the subject to come.
+// ---------------------------------
+
+NOTES:
 The EKF implementation was made with the intention of supporting _fast_ sensor updates on microcontrollers. The core code is essentially build around another implementation "TinyEKF" (https://github.com/simondlevy/TinyEKF). There are only small differences in how the user interacts with the library, and more guides may be found at the previously mentioned repository. Both implementations are efficient for microcontrollers in that they use static (compile-time) memory allocation (no "new" or "malloc").
 
 The difference between the implementations is that 'TeensyEKF' uses an iterative method for including each sensor reading. This means we can perform the update step without need of computing the 'inverse matrix' part of the Kalman gain step i.e. (P * H * P + R)^-1. In order for this method to work, we make the assumption that the measurement noise is uncorrelated, and that each sensor noise component is described solely by its corresponding diagonal term.
