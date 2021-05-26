@@ -3,12 +3,21 @@ TeensyEKF is a lightweight C/C++ implementation of the Extended Kalman Filter th
 
 The EKF implementation was made with the intention of supporting _fast_ sensor updates on microcontrollers. The core code is essentially build around another implementation "TinyEKF" (https://github.com/simondlevy/TinyEKF). There are only small differences in how the user interacts with the library, and more guides may be found at the previously mentioned repository. Both implementations are efficient for microcontrollers in that they use static (compile-time) memory allocation (no "new" or "malloc").
 
-The difference between the implementations is that 'TeensyEKF' uses an iterative method for including each sensor reading. This means we can perform the update step without need of computing the 'inverse matrix' part of the Kalman gain step i.e. \((P*H*P + R)^-1\)
+The difference between the implementations is that 'TeensyEKF' uses an iterative method for including each sensor reading. This means we can perform the update step without need of computing the 'inverse matrix' part of the Kalman gain step i.e. (P * H * P + R)^-1. In order for this method to work, we make the assumption that the measurement covariance matrix is uncorrelated, and that each sensor noise component is described by the corresponding diagonal term.
 
-<img src="https://render.githubusercontent.com/render/math?math=e^{i \pi} = -1">
+![image](https://user-images.githubusercontent.com/40239379/119681705-96ad7080-be42-11eb-9e74-1ce96becbbdc.png)
+Image from: http://www.anuncommonlab.com/articles/how-kalman-filters-work/part2.html
+
+The 'Main.ino' file shows an example sketch of how the sensor updates would be included, and the 'kalmanfilter.hpp' file shows how to define a custom EKF for the specific implementation. In the example a 21 state model is used for a combined Inertial Navigation System and Attitude Heading and Reference System, including also the disturbance forces and torques. For the interested reader, and to give an indication of the computational performance the models are shown below:
 
 
+The model contains the following states and inputs:
+![image](https://user-images.githubusercontent.com/40239379/119683535-02dca400-be44-11eb-9d8b-18b9890e375a.png)
 
-In order to make it practical for running on Arduino, STM32, and other microcontrollers, it uses static (compile-time) memory allocation (no "new" or "malloc"). The examples folder includes an Arduino example of sensor fusion. The extras/python folder includes an abstract Python class that you can use to prototype your EKF before implementing it in C/C++. The extrasc/c folder contains a "pure C" example from the literature.
+The dynamic prediction models for the individual states are derived as follows:
+![image](https://user-images.githubusercontent.com/40239379/119683144-b5603700-be43-11eb-9eaa-6db330413de4.png)
+![image](https://user-images.githubusercontent.com/40239379/119683418-ec364d00-be43-11eb-9c96-cc9086ae4174.png)
+![image](https://user-images.githubusercontent.com/40239379/119683001-9cf01c80-be43-11eb-9ae9-fc97a5dcddbf.png)
 
-Arduino users can simply install or drag the whole TinyEKF folder into their Arduino libraries folder. The examples/SensorFusion folder contains a little sensor fusion example using a BMP180 barometer and LM35 temperature sensor. I have run this example on an Arduino Uno and a Teensy 3.2. The BMP180, being an I^2C sensor, should be connected to pins 4 (SDA) and 5 (SCL) of the Uno, or pins 18 (SDA) and 19 (SCL) of the Teensy. For other Arduino boards, consult the documentation on the Wire library. The analog output from the LM35 should go to the A0 pin of your Arduino or Teensy.
+Note that covariance terms are defined assuming integrated noise (and the setQ_emperical() function is derived)
+![image](https://user-images.githubusercontent.com/40239379/119683362-dfb1f480-be43-11eb-808d-db5a5c875c9c.png)
