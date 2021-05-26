@@ -19,8 +19,9 @@ void setup() {
   Serial.begin(2000000); // opens serial port and sets baud rate
   while (!Serial) delay(10); // wait for Serial initialization
 
-  // IMU code here
-  IMU.init();
+  // Sensor code here (examples)
+  IMU.init(); // state com with IMU
+  RPi.init(); // start com with Raspberry Pi
 
 };
 
