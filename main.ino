@@ -71,8 +71,9 @@ void loop() {
   elapsed_ekf = EKF.update();
 
   // Fetch estimated states (double) structures
-  double* x_outer = EKF.getXref(0); // [x,y,z,dx,dy,dz]
+  double* x_outer = EKF.getXref(0); // [x,y,z,dx,dy,dz,ddx,ddy,ddz]
   double* x_inner = EKF.getXref(9); // [phi,theta,psi,p,q,r]
+  double* x_dist = EKF.getXref(15); // [Fx,Fy,Fz,Tx,Ty,Tz] - Parameters estimated by the EKF
   
   
   
@@ -82,7 +83,7 @@ void loop() {
   // Refresh control loops
   elapsed_control = Controller.update(x_outer, x_inner); 
   // Example usage for a function defined within the Controller class:
-  // Controller::update(double x_outer[6], double x_inner[5]) {
+  // Controller::update(double x_outer[6], double x_inner[6], double x_dist[6]) {
   //
   //    /* control code here */
   //    ...
