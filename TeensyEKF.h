@@ -1,5 +1,5 @@
 /*
- * TeensyEKF: Extended Kalman Filter for Arduino Teensy devices.
+ * TeensyEKF: Extended Kalman Filter intended for Arduino Teensy devices.
  *
  * Copyright (C) 2021 Morten Veng
  *
