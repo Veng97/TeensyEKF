@@ -31,7 +31,6 @@ static void row(double *a, double *b, int k, int n)
 static void transpose(double *a, double *at, int m, int n)
 {
     int i, j;
-
     for (i = 0; i < m; ++i)
         for (j = 0; j < n; ++j)
             at[j * m + i] = a[i * n + j];
@@ -81,7 +80,6 @@ static double dotprod(double *a, double *b, int n)
     double sum = 0;
     for (i = 0; i < n; ++i)
         sum += a[i] * b[i];
-
     return sum;
 }
 
@@ -114,7 +112,6 @@ static void copy(double *a, double *b, int n)
 static void accum(double *a, double *b, int m, int n)
 {
     int i;
-
     for (i = 0; i < m * n; ++i)
         a[i] += b[i];
 }
@@ -234,8 +231,8 @@ bool ekf_step(void *v, double *z, bool *z_update)
     double P_yy, y; // Scalars in iterative EKF correction
     for (int i = 0; i < m; ++i)
     {
-        if (z_update[i] == false)
-            continue;
+        if (z_update[i] == false) 
+            continue; // Skip if the i'th measurement has not been updated
 
         // Copy i'th row of H
         row(ekf.H, ekf.Hrow, i, n);
