@@ -1,5 +1,5 @@
 /*
- * TeensyEKF: Extended Kalman Filter for embedded processors
+ * TeensyEKF: Extended Kalman Filter intended for Arduino Teensy devices.
  *
  * Copyright (C) 2021 Morten Veng
  *
@@ -31,7 +31,6 @@ static void row(double *a, double *b, int k, int n)
 static void transpose(double *a, double *at, int m, int n)
 {
     int i, j;
-
     for (i = 0; i < m; ++i)
         for (j = 0; j < n; ++j)
             at[j * m + i] = a[i * n + j];
@@ -114,7 +113,6 @@ static void copy(double *a, double *b, int n)
 static void accum(double *a, double *b, int m, int n)
 {
     int i;
-
     for (i = 0; i < m * n; ++i)
         a[i] += b[i];
 }
