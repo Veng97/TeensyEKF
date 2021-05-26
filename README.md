@@ -18,7 +18,7 @@ The difference between the implementations is that 'TeensyEKF' uses an iterative
 ![image](https://user-images.githubusercontent.com/40239379/119681705-96ad7080-be42-11eb-9e74-1ce96becbbdc.png)
 Image from: http://www.anuncommonlab.com/articles/how-kalman-filters-work/part2.html
 
-The 'Main.ino' file shows an example sketch of how the sensor updates would be included, and the 'kalmanfilter.hpp' file shows how to define a custom EKF for the specific implementation. In the example a 21 state model is used for a combined Inertial Navigation System and Attitude Heading and Reference System, including also the disturbance forces and torques. For the interested reader, and to give an indication of the computational performance the models are shown below:
+The 'main.ino' file shows an example sketch of how the sensor updates would be included, and the 'kalmanfilter.hpp' file shows how to define a custom EKF for the specific implementation. In the example a 21 state model is used for a combined Inertial Navigation System and Attitude Heading and Reference System, including also the disturbance forces and torques. For the interested reader, and to give an indication of the computational performance the models are shown below:
 
 
 The model contains the following states and inputs:
