@@ -3,13 +3,23 @@
 #include <string.h>
 #include <SPI.h>  // SPI library for communicating with the IMU:
 
+
+// Global control input variables
+double Thrust, Tau; 
+
+// Global model parameters
+double MASS = 1.000;
+double GRAVITY = 9.820;
+double I_XX = 1e-2;
+double I_YY = 8.2e-3;
+double I_ZZ = 1.48e-2;
+
 // Include custom EKF class
 #include "kalmanfilter.hpp"
 
 // Variables for computation time inspection
 unsigned elapsed_serial, elapsed_imu, elapsed_ekf, elapsed_control = 0;
 elapsedMicros loop_clock; // Teensy specific clock-type
-
 
 //-------------------------------------
 // SETUP
