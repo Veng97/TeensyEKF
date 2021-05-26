@@ -3,7 +3,7 @@ TeensyEKF is a lightweight C/C++ implementation of the Extended Kalman Filter th
 
 //----------------------------------//
 
-Experimentation with a Teensy 4.0 indicated that the update step could be performed in ~700 microseconds (never above 1ms). This was with a 21 state EKF, which would require significant resources to invert (Kalman gain update) otherwise. Although, at this point i have only rough estimates of the speed gains, the same EKF update took about 2.4 ms with 'TinyEKF' - which itself is an efficient implementation. 
+Experimentation with a Teensy 4.0 indicated that the update step could be performed in ~700 microseconds (never above 1ms). This was with a 21 state EKF, which would require significant resources to invert (for the Kalman gain update) otherwise. Although, at this point i have only rough estimates of the speed gains, the same EKF update took about 2.4 ms with 'TinyEKF' - which itself is an efficient implementation. 
 Even so, by eleminating the need for computing the matrix inverse, this EKF is potentially more robust towards rounding-errors, meaning floating point precision may be easier realizable without risking filter divergence. In that case, the update speed may become even faster reaching <200 microseconds. Keep in mind that these numbers are measured for a 21 state EKF.
 
 More data on the subject to come.
